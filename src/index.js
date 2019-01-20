@@ -24,8 +24,8 @@ export const store = createStore(appReducer(history), composeEnhancers(applyMidd
 
 ReactDOM.render(
 	<Provider store={store}>
-		<ConnectedRouter history={history}>
-			<Auth>
+		<Auth>
+			<ConnectedRouter history={history}>
 				<AppBar>
 					<Switch>
 						<Route exact path="/" component={Home} />
@@ -33,8 +33,8 @@ ReactDOM.render(
 						<Redirect to="/" />
 					</Switch>
 				</AppBar>
-			</Auth>
-		</ConnectedRouter>
+			</ConnectedRouter>
+		</Auth>
 	</Provider>,
 	document.getElementById('root'),
 );

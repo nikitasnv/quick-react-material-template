@@ -12,7 +12,6 @@ import CircularProgress from '@material-ui/core/CircularProgress/CircularProgres
 import blue from '@material-ui/core/colors/blue';
 import grey from '@material-ui/core/colors/grey';
 import Snackbar from '@material-ui/core/Snackbar/Snackbar';
-import { withRouter } from 'react-router-dom';
 import ErrorIcon from '@material-ui/icons/Error';
 import Typography from '@material-ui/core/Typography/Typography';
 import Fade from '@material-ui/core/Fade/Fade';
@@ -204,7 +203,6 @@ const mapDispatchToProps = dispatch => ({
 
 export default compose(
 	withStyles(styles),
-	withRouter,
 	connect(mapStateToProps, mapDispatchToProps),
 )(Auth);
 
