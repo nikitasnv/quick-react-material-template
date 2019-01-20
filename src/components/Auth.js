@@ -203,8 +203,8 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default compose(
+	withStyles(styles),
 	withRouter,
 	connect(mapStateToProps, mapDispatchToProps),
-	withStyles(styles),
 )(Auth);
 

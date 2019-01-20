@@ -204,7 +204,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default compose(
+	withStyles(styles, { withTheme: true }),
 	withRouter,
 	connect(mapStateToProps, mapDispatchToProps),
-	withStyles(styles, { withTheme: true }),
 )(MiniDrawer);
