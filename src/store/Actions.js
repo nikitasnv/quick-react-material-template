@@ -1,7 +1,6 @@
-export const GET_DATA_FROM_API = 'GET_DATA_FROM_API';
-export const AUTH_USER = 'AUTH_USER';
-export const CHECK_USER = 'CHECK_USER';
 export const [AUTH_CHECK, AUTH_OUT, AUTH_IN] = [0, 1, 2];
+export const [GET_DATA_FROM_API, AUTH_USER, CHECK_USER] = ['GET_DATA_FROM_API', 'AUTH_USER', 'CHECK_USER'];
+export const [SAGA_CHECK_USER, SAGA_AUTH_USER, SAGA_GET_DATA_FROM_API] = ['SAGA_CHECK_USER', 'SAGA_AUTH_USER', 'SAGA_GET_DATA_FROM_API'];
 
 export const cacheView = (json, view) => ({ type: GET_DATA_FROM_API, data: json, view });
 export const authUser = (status, token) => ({ type: AUTH_USER, status, token });

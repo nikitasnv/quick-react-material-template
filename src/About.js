@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import Fade from '@material-ui/core/Fade';
-import { getDataFromApi } from './store/Actions';
+import { getDataFromApi } from './store/Store';
 
 class About extends React.Component {
 	componentWillMount() {

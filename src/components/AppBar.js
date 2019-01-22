@@ -22,7 +22,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'redux';
-import { setAuthState, AUTH_OUT } from '../store/Actions';
+import { AUTH_OUT, CHECK_USER } from '../store/Actions';
 
 const drawerWidth = 240;
 
@@ -200,7 +200,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	logout: () => dispatch(setAuthState(AUTH_OUT)),
+	logout: () => dispatch({ type: CHECK_USER, status: AUTH_OUT }),
 });
 
 export default compose(

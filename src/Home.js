@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import Fade from '@material-ui/core/Fade';
-import { getDataFromApi } from './store/Actions';
+import { getDataFromApi } from './store/Store';
 import Card from './components/Card';
 import Details from './components/Details';
 
