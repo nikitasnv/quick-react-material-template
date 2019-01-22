@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { applyMiddleware, compose, createStore } from 'redux';
 import { createBrowserHistory } from 'history';
-import thunkMiddleware from 'redux-thunk';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { ConnectedRouter, routerMiddleware } from 'connected-react-router';
+import createSagaMiddleware from 'redux-saga';
 
 import './index.css';
 import * as serviceWorker from './serviceWorker';
@@ -14,13 +14,17 @@ import Home from './Home';
 import About from './About';
 import appReducer from './store/Reducers';
 import Auth from './components/Auth';
+import RootSaga from  './store/Sagas';
 
 const history = createBrowserHistory();
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const sagaMiddleware = createSagaMiddleware();
 
 export const store = createStore(appReducer(history), composeEnhancers(applyMiddleware(
-	routerMiddleware(history), thunkMiddleware,
+	routerMiddleware(history), sagaMiddleware,
 )));
+
+sagaMiddleware.run(RootSaga);
 
 ReactDOM.render(
 	<Provider store={store}>
