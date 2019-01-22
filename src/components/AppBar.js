@@ -22,7 +22,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'redux';
-import { AUTH_OUT, CHECK_USER } from '../store/Sagas';
+import { AUTH_OUT, CHECK_USER } from '../store/Actions';
 
 const drawerWidth = 240;
 

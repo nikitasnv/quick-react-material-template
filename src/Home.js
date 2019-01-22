@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import Fade from '@material-ui/core/Fade';
-import { SAGA_GET_DATA_FROM_API } from './store/Sagas';
+import { getDataFromApi } from './store/Store';
 import Card from './components/Card';
 import Details from './components/Details';
 
@@ -62,7 +62,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	getData: () => dispatch({ type: SAGA_GET_DATA_FROM_API, view: 'home' }),
+	getData: () => dispatch(getDataFromApi('home')),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

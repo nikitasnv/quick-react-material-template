@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import Fade from '@material-ui/core/Fade';
-import { SAGA_GET_DATA_FROM_API } from './store/Sagas';
+import { getDataFromApi } from './store/Store';
 
 class About extends React.Component {
 	componentWillMount() {
@@ -43,7 +43,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	getData: () => dispatch({ type: SAGA_GET_DATA_FROM_API, view: 'about' }),
+	getData: () => dispatch(getDataFromApi('about')),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(About);

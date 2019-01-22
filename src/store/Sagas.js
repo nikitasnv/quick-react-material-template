@@ -2,15 +2,11 @@ import {
 	takeEvery, put, call, select,
 } from 'redux-saga/effects';
 
-export const [
+import {
 	GET_DATA_FROM_API, AUTH_USER, CHECK_USER,
-	AUTH_CHECK, AUTH_OUT, AUTH_IN,
+	AUTH_OUT, AUTH_IN,
 	SAGA_CHECK_USER, SAGA_AUTH_USER, SAGA_GET_DATA_FROM_API,
-] = [
-	'GET_DATA_FROM_API', 'AUTH_USER', 'CHECK_USER',
-	0, 1, 2,
-	'SAGA_CHECK_USER', 'SAGA_AUTH_USER', 'SAGA_GET_DATA_FROM_API',
-];
+} from './Actions';
 
 const delay = ms => new Promise(resolve => setTimeout(() => resolve(), ms));
 

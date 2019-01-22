@@ -5,7 +5,7 @@ import {
 	AUTH_USER,
 	CHECK_USER,
 	AUTH_CHECK,
-} from './Sagas';
+} from './Actions';
 
 const defaultState = {
 	views: {},

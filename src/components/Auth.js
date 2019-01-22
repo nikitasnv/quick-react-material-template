@@ -15,7 +15,7 @@ import Snackbar from '@material-ui/core/Snackbar/Snackbar';
 import ErrorIcon from '@material-ui/icons/Error';
 import Typography from '@material-ui/core/Typography/Typography';
 import Fade from '@material-ui/core/Fade/Fade';
-import { SAGA_AUTH_USER, SAGA_CHECK_USER } from '../store/Sagas';
+import { checkUser as checkUserAction, authUser } from '../store/Store';
 
 const styles = theme => ({
 	wrapper: {
@@ -197,10 +197,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	loginUser: form => new Promise(resolve => dispatch(
-		{ type: SAGA_AUTH_USER, payload: form, meta: { resolve } },
-	)),
-	checkUser: () => dispatch({ type: SAGA_CHECK_USER }),
+	loginUser: form => authUser(form, dispatch),
+	checkUser: () => dispatch(checkUserAction()),
 });
 
 export default compose(
