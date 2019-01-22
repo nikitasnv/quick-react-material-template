@@ -37,7 +37,7 @@ export function authCheck() {
 		setTimeout(() => {
 			const body = JSON.stringify({ status: token === '_TOKEN_' });
 			resolve(new Response(body));
-		}, 1000);
+		}, 500);
 	})
 		.then(response => response.json())
 		.then(json => dispatch(setAuthState(json.status ? AUTH_IN : AUTH_OUT)));
@@ -51,7 +51,7 @@ export function authLogin(form) {
 				body = { status: true, token: '_TOKEN_' };
 			}
 			resolve(new Response(JSON.stringify(body)));
-		}, 1000);
+		}, 500);
 	})
 		.then(response => response.json())
 		.then((json) => {
