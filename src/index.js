@@ -14,7 +14,7 @@ import Home from './Home';
 import About from './About';
 import appReducer from './store/Reducers';
 import Auth from './components/Auth';
-import RootSaga from  './store/Sagas';
+import RootSaga from './store/Sagas';
 
 const history = createBrowserHistory();
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
