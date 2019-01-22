@@ -9,7 +9,7 @@ import {
 import rootSaga from './Sagas';
 import appReducer from './Reducers';
 
-const USE_SAGA = false;
+const USE_SAGA = true;
 
 export const getDataFromApi = view => (USE_SAGA
 	? { type: SAGA_GET_DATA_FROM_API, view }
