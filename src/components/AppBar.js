@@ -20,9 +20,13 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import HomeIcon from '@material-ui/icons/Home';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import {
+	Link, Redirect, Route, Switch, withRouter, 
+} from 'react-router-dom';
 import { compose } from 'redux';
 import { AUTH_OUT, CHECK_USER } from '../store/Actions';
+import Home from '../Home';
+import About from '../About';
 
 const drawerWidth = 240;
 
@@ -180,7 +184,13 @@ class MiniDrawer extends React.Component {
 				</Drawer>
 				<main className={classes.content}>
 					<div className={classes.toolbar} />
-					<div className={classes.contentContainer}>{React.Children.only(this.props.children)}</div>
+					<div className={classes.contentContainer}>
+						<Switch>
+							<Route exact path="/" render={() => <Home data={this.props.views['/']} />} />
+							<Route exact path="/about" render={() => <About data={this.props.views['/about']} />} />
+							<Redirect to="/" />
+						</Switch>
+					</div>
 				</main>
 			</div>
 		);
@@ -190,13 +200,13 @@ class MiniDrawer extends React.Component {
 MiniDrawer.propTypes = {
 	classes: PropTypes.instanceOf(Object).isRequired,
 	theme: PropTypes.instanceOf(Object).isRequired,
-	children: PropTypes.element.isRequired,
 	pathname: PropTypes.string.isRequired,
 	logout: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
 	pathname: state.router.location.pathname,
+	views: state.app.views,
 });
 
 const mapDispatchToProps = dispatch => ({

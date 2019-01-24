@@ -1,18 +1,18 @@
 import {
 	takeEvery, put, call, select,
 } from 'redux-saga/effects';
-
+import { LOCATION_CHANGE } from 'connected-react-router';
 import {
 	GET_DATA_FROM_API, AUTH_USER, CHECK_USER,
 	AUTH_OUT, AUTH_IN,
-	SAGA_CHECK_USER, SAGA_AUTH_USER, SAGA_GET_DATA_FROM_API,
+	SAGA_CHECK_USER, SAGA_AUTH_USER,
 } from './Actions';
 
-const delay = ms => new Promise(resolve => setTimeout(() => resolve(), ms));
+// const delay = ms => new Promise(resolve => setTimeout(() => resolve(), ms));
 
 function* sendTestRequest(data) {
 	try {
-		yield delay(500);
+		// yield delay(500);
 		const response = yield call(fetch, 'http://mockbin.com/request', {
 			method: 'POST',
 			body: JSON.stringify(data),
@@ -27,7 +27,7 @@ function* sendTestRequest(data) {
 
 export function* getDataFromApi(action) {
 	try {
-		yield delay(500);
+		// yield delay(500);
 		const token = (yield select()).app.authToken;
 		if (token !== '_TOKEN_') {
 			console.error('AuthToken expired');
@@ -35,13 +35,14 @@ export function* getDataFromApi(action) {
 		}
 		let url;
 		switch (action.view) {
-			default:
-			case 'home':
+			case '/':
 				url = 'https://jsonplaceholder.typicode.com/photos?_limit=20';
 				break;
-			case 'about':
+			case '/about':
 				url = 'https://jsonplaceholder.typicode.com/posts/2';
 				break;
+			default:
+				return;
 		}
 		const response = yield call(fetch, url);
 		const decoded = yield call([response, 'json']);
@@ -80,8 +81,17 @@ export function* authLogin(task) {
 	}
 }
 
+function* updateView(task) {
+	const viewPath = task.payload.location.pathname;
+	const viewData = (yield select()).app.views[viewPath];
+	if (typeof viewData === 'undefined') {
+		yield call(getDataFromApi, { view: viewPath });
+	}
+}
+
 export default function* rootSaga() {
 	yield takeEvery(SAGA_CHECK_USER, authCheck);
 	yield takeEvery(SAGA_AUTH_USER, authLogin);
-	yield takeEvery(SAGA_GET_DATA_FROM_API, getDataFromApi);
+	// yield takeEvery(SAGA_GET_DATA_FROM_API, getDataFromApi);
+	yield takeEvery(LOCATION_CHANGE, updateView);
 }
