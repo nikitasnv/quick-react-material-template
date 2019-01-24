@@ -1,21 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import TextField from '@material-ui/core/TextField/TextField';
-import Paper from '@material-ui/core/Paper/Paper';
-import Checkbox from '@material-ui/core/Checkbox/Checkbox';
-import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import { compose } from 'redux';
-import FormControlLabel from '@material-ui/core/FormControlLabel/FormControlLabel';
 import CircularProgress from '@material-ui/core/CircularProgress/CircularProgress';
 import blue from '@material-ui/core/colors/blue';
 import grey from '@material-ui/core/colors/grey';
 import Snackbar from '@material-ui/core/Snackbar/Snackbar';
 import ErrorIcon from '@material-ui/icons/Error';
-import Typography from '@material-ui/core/Typography/Typography';
-import Fade from '@material-ui/core/Fade/Fade';
-import { checkUser as checkUserAction, authUser } from '../store/Store';
+import { checkUserAction, authUserAction, updateError } from '../store/Actions';
+import LoginPage from './Login';
 
 const styles = theme => ({
 	wrapper: {
@@ -66,8 +60,8 @@ const styles = theme => ({
 class Auth extends React.Component {
 	state = {
 		loading: false,
-		email: null,
-		password: null,
+		email: '',
+		password: '',
 		remember: false,
 		showError: false,
 	};
@@ -76,29 +70,23 @@ class Auth extends React.Component {
 		this.props.checkUser();
 	}
 
-	fieldChange = (e) => {
-		const fieldName = e.target.name;
-		const fieldValue = e.target.checked || e.target.value || false;
-		this.setState({
-			[fieldName]: fieldValue,
+	handleSubmit = (values, { setSubmitting }) => {
+		this.props.loginUser(values).then((status) => {
+			setSubmitting(false);
+			if (!status) {
+				this.props.setError(true, 'Wrong email or password');
+			}
 		});
 	};
 
-	handleSubmit = (e) => {
-		e.preventDefault();
-		this.setState({ loading: true });
-		const form = {
-			email: this.state.email,
-			password: this.state.password,
-			remember: this.state.remember,
-		};
-		this.props.loginUser(form).then((status) => {
-			this.setState({ loading: false, showError: !status });
-		});
+	hideAuthError = () => {
+		this.setState({ showError: false });
 	};
 
 	render() {
-		const { children, authState, classes } = this.props;
+		const {
+			children, authState, classes, errorBar, setError,
+		} = this.props;
 		return (
 			<React.Fragment>
 				{authState === 0 && (
@@ -107,80 +95,33 @@ class Auth extends React.Component {
 					</div>
 				)}
 				{authState === 1 && (
-					<Fade in>
-						<div className={classes.wrapper}>
-							<div className={classes.loginContainer}>
-								<Paper className={classes.paper}>
-									<form onSubmit={this.handleSubmit}>
-										<TextField
-											className={classes.field}
-											label="E-mail"
-											name="email"
-											fullWidth
-											required
-											onChange={this.fieldChange}
-										/>
-										<TextField
-											className={classes.field}
-											label="Password"
-											name="password"
-											type="password"
-											fullWidth
-											required
-											onChange={this.fieldChange}
-										/>
-
-										<div>
-											<FormControlLabel
-												className={classes.field}
-												control={(
-													<Checkbox
-														name="remember"
-														color="primary"
-														onChange={this.fieldChange}
-													/>
-												)}
-												label="Remember Me"
-											/>
-										</div>
-										<Button
-											type="submit"
-											variant="contained"
-											color="primary"
-											className={classes.loginBtn}
-											disabled={this.state.loading || !this.state.email || !this.state.password}
-										>
-										Login
-											{this.state.loading
-										&& <CircularProgress size={24} className={classes.buttonProgress} />}
-										</Button>
-									</form>
-								</Paper>
-								<Snackbar
-									ContentProps={{
-										classes: {
-											root: classes.errorSnack,
-										},
-									}}
-									anchorOrigin={{
-										vertical: 'bottom',
-										horizontal: 'center',
-									}}
-									autoHideDuration={6000}
-									message={(
-										<span className={classes.errorMessage}>
-									Wrong login or password<ErrorIcon className={classes.errorIcon} />
-										</span>
-									)}
-									open={this.state.showError}
-									onClose={() => this.setState({ showError: false })}
-								/>
-								<Typography style={{ textAlign: 'center', marginTop: 15 }}>Email/Password: <b>test</b></Typography>
-							</div>
-						</div>
-					</Fade>
+					<LoginPage
+						runSubmit={this.handleSubmit}
+						hideAuthError={this.hideAuthError}
+						classes={classes}
+						formState={this.state}
+					/>
 				)}
 				{authState === 2 && React.Children.only(children)}
+				<Snackbar
+					ContentProps={{
+						classes: {
+							root: classes.errorSnack,
+						},
+					}}
+					anchorOrigin={{
+						vertical: 'bottom',
+						horizontal: 'center',
+					}}
+					autoHideDuration={6000}
+					message={(
+						<span className={classes.errorMessage}>
+							{errorBar.message}<ErrorIcon className={classes.errorIcon} />
+						</span>
+					)}
+					open={errorBar.show}
+					onClose={() => setError(false)}
+				/>
 			</React.Fragment>
 		);
 	}
@@ -190,15 +131,19 @@ Auth.propTypes = {
 	authState: PropTypes.number.isRequired,
 	loginUser: PropTypes.func.isRequired,
 	checkUser: PropTypes.func.isRequired,
+	setError: PropTypes.func.isRequired,
+	errorBar: PropTypes.instanceOf(Object).isRequired,
 };
 
 const mapStateToProps = state => ({
 	authState: state.app.authState,
+	errorBar: state.app.error,
 });
 
 const mapDispatchToProps = dispatch => ({
-	loginUser: form => authUser(form, dispatch),
+	loginUser: form => authUserAction(form, dispatch),
 	checkUser: () => dispatch(checkUserAction()),
+	setError: (show, message = '') => dispatch(updateError(show, message)),
 });
 
 export default compose(

@@ -5,12 +5,14 @@ import {
 	AUTH_USER,
 	CHECK_USER,
 	AUTH_CHECK,
+	UPDATE_ERROR_BAR,
 } from './Actions';
 
 const defaultState = {
 	views: {},
 	authState: AUTH_CHECK,
 	authToken: localStorage.getItem('AUTH_TOKEN'),
+	error: { message: '', show: false },
 };
 
 const mainReducer = (state = defaultState, action) => {
@@ -30,6 +32,16 @@ const mainReducer = (state = defaultState, action) => {
 			return {
 				...state,
 				authState: action.status,
+			};
+		case UPDATE_ERROR_BAR:
+			return {
+				...state,
+				error: {
+					message: action.show
+						? action.message
+						: state.error.message,
+					show: action.show, 
+				},
 			};
 		default:
 			return state;
