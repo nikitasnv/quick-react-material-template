@@ -25,8 +25,8 @@ import {
 } from 'react-router-dom';
 import { compose } from 'redux';
 import { AUTH_OUT, CHECK_USER } from '../store/Actions';
-import Home from '../Home';
-import About from '../About';
+import Home from '../routes/Home';
+import About from '../routes/About';
 
 const drawerWidth = 240;
 

@@ -2,8 +2,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Fade from '@material-ui/core/Fade';
-import Card from './components/Card';
-import Details from './components/Details';
+import Card from '../components/Card';
+import Details from '../components/Details';
 
 export default class Home extends Component {
 	state = {
