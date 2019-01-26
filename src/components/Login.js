@@ -7,9 +7,47 @@ import FormControlLabel from '@material-ui/core/FormControlLabel/FormControlLabe
 import CircularProgress from '@material-ui/core/CircularProgress/CircularProgress';
 import Typography from '@material-ui/core/Typography/Typography';
 import { Formik, Form, Field } from 'formik';
+import { withStyles } from '@material-ui/core/styles';
 import Fade from '@material-ui/core/Fade/Fade';
+import grey from '@material-ui/core/colors/grey';
+import blue from '@material-ui/core/colors/blue';
 
-export default ({
+const styles = theme => ({
+	wrapper: {
+		height: '100%',
+		width: '100%',
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: grey[50],
+	},
+	loginContainer: {
+		minWidth: 320,
+		maxWidth: 400,
+		height: 'auto',
+	},
+	paper: {
+		padding: 20,
+		overflow: 'auto',
+	},
+	loginBtn: {
+		float: 'right',
+		margin: theme.spacing.unit,
+	},
+	field: {
+		marginTop: 10,
+	},
+	buttonProgress: {
+		color: blue[500],
+		position: 'absolute',
+		top: '50%',
+		left: '50%',
+		marginTop: -12,
+		marginLeft: -12,
+	},
+});
+
+const Login = ({
 	classes, runSubmit,
 }) => (
 	<div className={classes.wrapper}>
@@ -88,3 +126,5 @@ export default ({
 		</Fade>
 	</div>
 );
+
+export default withStyles(styles)(Login);

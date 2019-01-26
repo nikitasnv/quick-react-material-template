@@ -21,12 +21,13 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import HomeIcon from '@material-ui/icons/Home';
 import { connect } from 'react-redux';
 import {
-	Link, Redirect, Route, Switch, withRouter, 
+	Link, Redirect, Route, Switch,
 } from 'react-router-dom';
 import { compose } from 'redux';
+import { ConnectedRouter } from 'connected-react-router';
+import { HomeLoader, AboutLoader } from '../routes/Loaders';
 import { AUTH_OUT, CHECK_USER } from '../store/Actions';
-import Home from '../routes/Home';
-import About from '../routes/About';
+import { history } from '../index';
 
 const drawerWidth = 240;
 
@@ -124,75 +125,77 @@ class MiniDrawer extends React.Component {
 	};
 
 	render() {
-		const { classes, theme } = this.props;
+		const { classes, theme, views } = this.props;
 
 		return (
-			<div className={classes.root}>
-				<CssBaseline />
-				<AppBar
-					position="fixed"
-					className={classNames(classes.appBar, {
-						[classes.appBarShift]: this.state.open,
-					})}
-				>
-					<Toolbar className={classes.appBarContainer} disableGutters={!this.state.open}>
-						<IconButton
-							color="inherit"
-							aria-label="Open drawer"
-							onClick={this.handleDrawerOpen}
-							className={classNames(classes.menuButton, {
-								[classes.hide]: this.state.open,
-							})}
-						>
-							<MenuIcon />
-						</IconButton>
-						<Typography variant="h6" color="inherit" noWrap>Title</Typography>
-						<div style={{ flexGrow: 1 }} />
-						<IconButton onClick={this.logoutApp} color="inherit" style={{ marginRight: 15 }}><Logout /></IconButton>
-					</Toolbar>
-				</AppBar>
-				<Drawer
-					variant="permanent"
-					className={classNames(classes.drawer, {
-						[classes.drawerOpen]: this.state.open,
-						[classes.drawerClose]: !this.state.open,
-					})}
-					classes={{
-						paper: classNames({
+			<ConnectedRouter history={history}>
+				<div className={classes.root}>
+					<CssBaseline />
+					<AppBar
+						position="fixed"
+						className={classNames(classes.appBar, {
+							[classes.appBarShift]: this.state.open,
+						})}
+					>
+						<Toolbar className={classes.appBarContainer} disableGutters={!this.state.open}>
+							<IconButton
+								color="inherit"
+								aria-label="Open drawer"
+								onClick={this.handleDrawerOpen}
+								className={classNames(classes.menuButton, {
+									[classes.hide]: this.state.open,
+								})}
+							>
+								<MenuIcon />
+							</IconButton>
+							<Typography variant="h6" color="inherit" noWrap>Title</Typography>
+							<div style={{ flexGrow: 1 }} />
+							<IconButton onClick={this.logoutApp} color="inherit" style={{ marginRight: 15 }}><Logout /></IconButton>
+						</Toolbar>
+					</AppBar>
+					<Drawer
+						variant="permanent"
+						className={classNames(classes.drawer, {
 							[classes.drawerOpen]: this.state.open,
 							[classes.drawerClose]: !this.state.open,
-						}),
-					}}
-					open={this.state.open}
-				>
-					<div className={classes.toolbar}>
-						<IconButton onClick={this.handleDrawerClose}>
-							{theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-						</IconButton>
-					</div>
-					<Divider />
-					<List>
-						<ListItem selected={this.props.pathname === '/'} button component={Link} to="/">
-							<ListItemIcon><HomeIcon /></ListItemIcon>
-							<ListItemText primary="Home" />
-						</ListItem>
-						<ListItem selected={this.props.pathname === '/about'} button component={Link} to="/about">
-							<ListItemIcon><InboxIcon /></ListItemIcon>
-							<ListItemText primary="About" />
-						</ListItem>
-					</List>
-				</Drawer>
-				<main className={classes.content}>
-					<div className={classes.toolbar} />
-					<div className={classes.contentContainer}>
-						<Switch>
-							<Route exact path="/" render={() => <Home data={this.props.views['/']} />} />
-							<Route exact path="/about" render={() => <About data={this.props.views['/about']} />} />
-							<Redirect to="/" />
-						</Switch>
-					</div>
-				</main>
-			</div>
+						})}
+						classes={{
+							paper: classNames({
+								[classes.drawerOpen]: this.state.open,
+								[classes.drawerClose]: !this.state.open,
+							}),
+						}}
+						open={this.state.open}
+					>
+						<div className={classes.toolbar}>
+							<IconButton onClick={this.handleDrawerClose}>
+								{theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+							</IconButton>
+						</div>
+						<Divider />
+						<List>
+							<ListItem selected={this.props.pathname === '/'} button component={Link} to="/">
+								<ListItemIcon><HomeIcon /></ListItemIcon>
+								<ListItemText primary="Home" />
+							</ListItem>
+							<ListItem selected={this.props.pathname === '/about'} button component={Link} to="/about">
+								<ListItemIcon><InboxIcon /></ListItemIcon>
+								<ListItemText primary="About" />
+							</ListItem>
+						</List>
+					</Drawer>
+					<main className={classes.content}>
+						<div className={classes.toolbar} />
+						<div className={classes.contentContainer}>
+							<Switch>
+								<Route exact path="/" render={() => <HomeLoader data={views['/']} />} />
+								<Route exact path="/about" render={() => <AboutLoader data={views['/about']} />} />
+								<Redirect to="/" />
+							</Switch>
+						</div>
+					</main>
+				</div>
+			</ConnectedRouter>
 		);
 	}
 }
@@ -215,6 +218,5 @@ const mapDispatchToProps = dispatch => ({
 
 export default compose(
 	withStyles(styles, { withTheme: true }),
-	withRouter,
 	connect(mapStateToProps, mapDispatchToProps),
 )(MiniDrawer);

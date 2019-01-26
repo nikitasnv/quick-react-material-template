@@ -4,7 +4,7 @@ export const [SAGA_CHECK_USER, SAGA_AUTH_USER, SAGA_GET_DATA_FROM_API] = ['SAGA_
 export const UPDATE_ERROR_BAR = 'UPDATE_ERROR_BAR';
 
 export const updateError = (show, message) => ({ type: UPDATE_ERROR_BAR, show, message });
-// export const getDataFromApiAction = view => ({ type: SAGA_GET_DATA_FROM_API, view });
+export const getDataFromApiAction = (view, resolve = undefined) => ({ type: SAGA_GET_DATA_FROM_API, view, resolve });
 export const checkUserAction = () => ({ type: SAGA_CHECK_USER });
 export const authUserAction = (form, dispatch) => new Promise(resolve => dispatch(
 	{ type: SAGA_AUTH_USER, payload: form, meta: { resolve } },

@@ -1,11 +1,12 @@
 import {
 	takeEvery, put, call, select,
 } from 'redux-saga/effects';
-import { LOCATION_CHANGE } from 'connected-react-router';
+
 import {
 	GET_DATA_FROM_API, AUTH_USER, CHECK_USER,
 	AUTH_OUT, AUTH_IN,
 	SAGA_CHECK_USER, SAGA_AUTH_USER,
+	SAGA_GET_DATA_FROM_API,
 } from './Actions';
 
 // const delay = ms => new Promise(resolve => setTimeout(() => resolve(), ms));
@@ -47,6 +48,7 @@ export function* getDataFromApi(action) {
 		const response = yield call(fetch, url);
 		const decoded = yield call([response, 'json']);
 		yield put({ type: GET_DATA_FROM_API, data: decoded, view: action.view });
+		action.resolve && action.resolve();
 	} catch (e) {
 		console.error(e);
 	}
@@ -81,17 +83,17 @@ export function* authLogin(task) {
 	}
 }
 
-function* updateView(task) {
+/* function* updateView(task) {
 	const viewPath = task.payload.location.pathname;
 	const viewData = (yield select()).app.views[viewPath];
 	if (typeof viewData === 'undefined') {
 		yield call(getDataFromApi, { view: viewPath });
 	}
-}
+} */
 
 export default function* rootSaga() {
 	yield takeEvery(SAGA_CHECK_USER, authCheck);
 	yield takeEvery(SAGA_AUTH_USER, authLogin);
-	// yield takeEvery(SAGA_GET_DATA_FROM_API, getDataFromApi);
-	yield takeEvery(LOCATION_CHANGE, updateView);
+	yield takeEvery(SAGA_GET_DATA_FROM_API, getDataFromApi);
+//	yield takeEvery(LOCATION_CHANGE, updateView);
 }
