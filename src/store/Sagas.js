@@ -14,7 +14,7 @@ import {
 function* sendTestRequest(data) {
 	try {
 		// yield delay(500);
-		const response = yield call(fetch, 'http://mockbin.com/request', {
+		const response = yield call(fetch, 'https://mockbin.com/request', {
 			method: 'POST',
 			body: JSON.stringify(data),
 		});
