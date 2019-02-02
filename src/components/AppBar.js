@@ -25,7 +25,8 @@ import {
 } from 'react-router-dom';
 import { compose } from 'redux';
 import { ConnectedRouter } from 'connected-react-router';
-import { HomeLoader, AboutLoader } from '../routes/Loaders';
+import Home from '../routes/Home';
+import About from '../routes/About';
 import { AUTH_OUT, CHECK_USER } from '../store/Actions';
 import { history } from '../index';
 
@@ -188,8 +189,8 @@ class MiniDrawer extends React.Component {
 						<div className={classes.toolbar} />
 						<div className={classes.contentContainer}>
 							<Switch>
-								<Route exact path="/" render={() => <HomeLoader data={views['/']} />} />
-								<Route exact path="/about" render={() => <AboutLoader data={views['/about']} />} />
+								<Route exact path="/" render={() => <Home data={views['/']} />} />
+								<Route exact path="/about" render={() => <About data={views['/about']} />} />
 								<Redirect to="/" />
 							</Switch>
 						</div>
