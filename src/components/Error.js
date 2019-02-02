@@ -1,5 +1,5 @@
 import React from 'react';
-import ErrorIcon from '@material-ui/core/SvgIcon/SvgIcon';
+import ErrorIcon from '@material-ui/icons/Error';
 import Snackbar from '@material-ui/core/Snackbar/Snackbar';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
